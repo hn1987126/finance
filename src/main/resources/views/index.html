@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
+       folder instead of downloaupdatePasswordding all of them to reduce the load. -->
   <link rel="stylesheet" href="css/all-skins.min.css">
   <link rel="stylesheet" href="css/main.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,9 +27,9 @@
   <header class="main-header">
     <a href="javascript:;" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>人人</b></span>
+      <span class="logo-mini"><b>俊航软件</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>人人快速开发平台</b></span>
+      <span class="logo-lg"><b>财务管理系统</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -37,11 +37,12 @@
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-	  <div style="float:left;color:#fff;padding:15px 10px;">欢迎 {{user.username}}</div>
+	  <div style="float:left;color:#fff;padding:15px 10px;"></div>
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <li><a href="javascript:;" @click="donate"><i class="fa fa-jpy"></i> &nbsp;捐赠作者</a></li>
-          <li><a href="http://www.renren.io" target="_blank"><i class="fa fa-home"></i> &nbsp;编程教程</a></li>
+          <!--<li><a href="javascript:;" @click="donate"><i class="fa fa-jpy"></i> &nbsp;捐赠作者</a></li>-->
+          <!--<li><a href="http://www.renren.io" target="_blank"><i class="fa fa-home"></i> &nbsp;编程教程</a></li>-->
+            <li style="color:#fff;padding:15px 10px;">欢迎 {{user.username}}</li>
 		  <li><a href="javascript:;" @click="updatePassword"><i class="fa fa-lock"></i> &nbsp;修改密码</a></li>
           <li><a href="javascript:;" @click="logout"><i class="fa fa-sign-out"></i> &nbsp;退出系统</a></li>
 		</ul>
@@ -85,11 +86,11 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
+  <footer class="main-footer" style="display: none;">
     <div class="pull-right hidden-xs">
       Version 1.0.0
     </div>
-    Copyright &copy; 2017 <a href="http://www.renren.io" target="_blank">renren.io</a> All Rights Reserved
+    Copyright &copy; 2017 <a href="http://www.baidu.com" target="_blank">jhsoft</a> All Rights Reserved
   </footer>
 
   <!-- Add the sidebar's background. This div must be placed

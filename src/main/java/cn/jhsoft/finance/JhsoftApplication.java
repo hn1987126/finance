@@ -7,14 +7,14 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 
 @SpringBootApplication
-public class RenrenApplication extends SpringBootServletInitializer {
+public class JhsoftApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RenrenApplication.class, args);
+		SpringApplication.run(JhsoftApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(RenrenApplication.class);
+		return application.sources(JhsoftApplication.class);
 	}
 }
