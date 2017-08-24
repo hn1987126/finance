@@ -7,14 +7,14 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 
 @SpringBootApplication
-public class JhsoftApplication extends SpringBootServletInitializer {
+public class MyApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JhsoftApplication.class, args);
+		SpringApplication.run(MyApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(JhsoftApplication.class);
+		return application.sources(MyApplication.class);
 	}
 }
