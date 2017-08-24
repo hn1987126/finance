@@ -3,9 +3,11 @@ package cn.jhsoft.finance.modules.sys.entity;
 import cn.jhsoft.finance.common.validator.group.AddGroup;
 import cn.jhsoft.finance.common.validator.group.UpdateGroup;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +49,8 @@ public class SysUserEntity implements Serializable {
 	 */
 	@NotBlank(message="邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	@Email(message="邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
+	//@Pattern(regexp="^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", message="手机号格式不正确")
+	//@Length(max=6, min=3, message="{username.length}")
 	private String email;
 
 	/**
