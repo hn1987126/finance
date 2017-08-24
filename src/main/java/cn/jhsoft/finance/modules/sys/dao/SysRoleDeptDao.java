@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * 角色与部门对应关系
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017年6月21日 23:33:46
  */
 @Mapper

@@ -6,8 +6,8 @@ import cn.jhsoft.finance.common.utils.R;
 /**
  * 用户Token
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017-03-23 15:22:07
  */
 public interface SysUserTokenService {

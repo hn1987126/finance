@@ -21,8 +21,8 @@ import java.util.List;
 /**
  * Druid配置
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017-04-21 0:00
  */
 @Configuration

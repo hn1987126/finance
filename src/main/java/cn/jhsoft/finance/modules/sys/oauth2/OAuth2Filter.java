@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * oauth2过滤器
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017-05-20 13:00
  */
 public class OAuth2Filter extends AuthenticatingFilter {

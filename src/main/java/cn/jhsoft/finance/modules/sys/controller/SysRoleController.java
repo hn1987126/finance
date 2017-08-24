@@ -21,8 +21,8 @@ import java.util.Map;
 /**
  * 角色管理
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2016年11月8日 下午2:18:33
  */
 @RestController

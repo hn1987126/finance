@@ -9,8 +9,8 @@ import java.util.Map;
 /**
  * 查询参数
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017-03-14 23:15
  */
 public class Query extends LinkedHashMap<String, Object> {

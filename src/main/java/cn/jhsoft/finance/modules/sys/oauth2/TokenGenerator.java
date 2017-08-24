@@ -8,8 +8,8 @@ import java.util.UUID;
 /**
  * 生成token
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author jhsoft
+ * @email hn1987@126.com
  * @date 2017-05-20 14:41
  */
 public class TokenGenerator {
