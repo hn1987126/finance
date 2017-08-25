@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.jhsoft.finance.modules.pm.dao.DeviceDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.jhsoft.finance.modules.pm.entity.DeviceEntity" id="deviceMap">
+        <result property="id" column="id"/>
+        <result property="deviceNum" column="device_num"/>
+        <result property="name" column="name"/>
+        <result property="deviceModel" column="device_model"/>
+        <result property="mac" column="mac"/>
+        <result property="gatewayUrl" column="gateway_url"/>
+        <result property="floor" column="floor"/>
+        <result property="groupId" column="group_id"/>
+        <result property="mallId" column="mall_id"/>
+        <result property="tags" column="tags"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createAdminid" column="create_adminid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="cn.jhsoft.finance.modules.pm.entity.DeviceEntity">
+		select * from tbl_device where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="cn.jhsoft.finance.modules.pm.entity.DeviceEntity">
+		select * from tbl_device
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tbl_device
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+	</select>
+	 
+	<insert id="save" parameterType="cn.jhsoft.finance.modules.pm.entity.DeviceEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_device
+		(
+			`device_num`, 
+			`name`, 
+			`device_model`, 
+			`mac`, 
+			`gateway_url`, 
+			`floor`, 
+			`group_id`, 
+			`mall_id`, 
+			`tags`, 
+			`create_time`, 
+			`create_adminid`
+		)
+		values
+		(
+			#{deviceNum}, 
+			#{name}, 
+			#{deviceModel}, 
+			#{mac}, 
+			#{gatewayUrl}, 
+			#{floor}, 
+			#{groupId}, 
+			#{mallId}, 
+			#{tags}, 
+			#{createTime}, 
+			#{createAdminid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.jhsoft.finance.modules.pm.entity.DeviceEntity">
+		update tbl_device 
+		<set>
+			<if test="deviceNum != null">`device_num` = #{deviceNum}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="deviceModel != null">`device_model` = #{deviceModel}, </if>
+			<if test="mac != null">`mac` = #{mac}, </if>
+			<if test="gatewayUrl != null">`gateway_url` = #{gatewayUrl}, </if>
+			<if test="floor != null">`floor` = #{floor}, </if>
+			<if test="groupId != null">`group_id` = #{groupId}, </if>
+			<if test="mallId != null">`mall_id` = #{mallId}, </if>
+			<if test="tags != null">`tags` = #{tags}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createAdminid != null">`create_adminid` = #{createAdminid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_device where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tbl_device where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -114,6 +114,9 @@ public class SysDeptController extends AbstractController {
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:dept:update")
 	public R update(@RequestBody SysDeptEntity dept){
+		if (dept.getParentId() == dept.getDeptId()){
+			return R.error("自己的上级部门不能是自己");
+		}
 		sysDeptService.update(dept);
 		
 		return R.ok();

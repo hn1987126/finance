@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.jhsoft.finance.modules.pm.dao.MallDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.jhsoft.finance.modules.pm.entity.MallEntity" id="mallMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="relname" column="relname"/>
+        <result property="tel" column="tel"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createAdminid" column="create_adminid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="cn.jhsoft.finance.modules.pm.entity.MallEntity">
+		select * from tbl_mall where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="cn.jhsoft.finance.modules.pm.entity.MallEntity">
+		select * from tbl_mall
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tbl_mall
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+	</select>
+	 
+	<insert id="save" parameterType="cn.jhsoft.finance.modules.pm.entity.MallEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_mall
+		(
+			`name`, 
+			`relname`, 
+			`tel`, 
+			`mobile`, 
+			`email`, 
+			`address`, 
+			`create_time`, 
+			`create_adminid`
+		)
+		values
+		(
+			#{name}, 
+			#{relname}, 
+			#{tel}, 
+			#{mobile}, 
+			#{email}, 
+			#{address}, 
+			#{createTime}, 
+			#{createAdminid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.jhsoft.finance.modules.pm.entity.MallEntity">
+		update tbl_mall 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="relname != null">`relname` = #{relname}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createAdminid != null">`create_adminid` = #{createAdminid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_mall where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tbl_mall where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

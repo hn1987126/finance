@@ -131,3 +131,81 @@ INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, 
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('34', '31', '修改', NULL, 'sys:dept:update,sys:dept:select', '2', NULL, '0');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('35', '31', '删除', NULL, 'sys:dept:delete', '2', NULL, '0');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '0', '业务管理', NULL, NULL, '0', 'fa fa-opencart', '1');
+
+
+
+-- 菜单SQL
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '设备', 'modules/pm/device.html', NULL, '1', 'fa fa-recycle', '6');
+set @parentId = @@identity;
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:device:list,pm:device:info', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:device:save', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:device:update', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:device:delete', '2', null, '6';
+
+-- 菜单SQL
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '商场', 'modules/pm/mall.html', NULL, '1', 'fa fa-skyatlas', '7');
+set @parentId = @@identity;
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:mall:list,pm:mall:info', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:mall:save', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:mall:update', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:mall:delete', '2', null, '6';
+
+-- 菜单SQL
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '基础数据', 'modules/pm/basicdata.html', NULL, '1', 'fa fa-window-restore', '100');
+set @parentId = @@identity;
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:basicdata:list,pm:basicdata:info', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:basicdata:save,pm:basicdata:select', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:basicdata:update,pm:basicdata:select', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:basicdata:delete', '2', null, '6';
+
+
+-- 商场
+DROP TABLE IF EXISTS `tbl_mall`;
+CREATE TABLE IF NOT EXISTS `tbl_mall` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '商场名称',
+  `relname` varchar(32) DEFAULT '' COMMENT '联系人',
+  `tel` varchar(32) DEFAULT '' COMMENT '联系电话',
+  `mobile` varchar(11) DEFAULT '' COMMENT '手机号',
+  `email` varchar(32) DEFAULT '' COMMENT '电子邮箱',
+  `address` varchar(64) DEFAULT '' COMMENT '地址',
+  `create_time` datetime COMMENT '添加时间',
+  `create_adminid` bigint DEFAULT 0 COMMENT '添加人',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COMMENT='商场';
+
+
+-- 基础数据
+DROP TABLE IF EXISTS `tbl_basic_data`;
+CREATE TABLE IF NOT EXISTS `tbl_basic_data` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `parent_id` bigint COMMENT '父ID，顶级为0',
+  `ename` varchar(128) COMMENT '标识',
+  `name` varchar(128) COMMENT '基础数据名称',
+  `order_num` int COMMENT '排序',
+  `create_time` datetime COMMENT '添加时间',
+  `create_adminid` bigint DEFAULT 0 COMMENT '添加人',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COMMENT='基础数据';
+
+insert into tbl_basic_data values (1, 0, 'wifi_group', '探针分组', 1, '2017-08-25 17:10:10', 1);
+
+
+-- 设备
+DROP TABLE IF EXISTS `tbl_device`;
+CREATE TABLE IF NOT EXISTS `tbl_device` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `device_num` varchar(32) NOT NULL DEFAULT '' COMMENT '设备号',
+  `name` varchar(64) DEFAULT '' COMMENT '设备名称',
+  `device_model` varchar(64) DEFAULT '' COMMENT '型号',
+  `mac` varchar(32) NOT NULL DEFAULT '' COMMENT '设备mac',
+  `gateway_url` varchar(64) DEFAULT '' COMMENT '网关url',
+  `floor` varchar(10) DEFAULT '' COMMENT '所在楼层',
+  `group_id` int(11) DEFAULT 0 COMMENT '所属分组',
+  `mall_id` int(11) DEFAULT 0 COMMENT '所属商场',
+  `tags` varchar(128) DEFAULT '' COMMENT '标签',
+  `create_time` datetime COMMENT '添加时间',
+  `create_adminid` bigint DEFAULT 0 COMMENT '添加人',
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8 COMMENT='设备';
+

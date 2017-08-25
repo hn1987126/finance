@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.jhsoft.finance.modules.pm.dao.BasicDataDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.jhsoft.finance.modules.pm.entity.BasicDataEntity" id="basicDataMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+		<result property="ename" column="ename"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createAdminid" column="create_adminid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="cn.jhsoft.finance.modules.pm.entity.BasicDataEntity">
+		select * from tbl_basic_data where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="cn.jhsoft.finance.modules.pm.entity.BasicDataEntity">
+		select d.*,(select p.name from tbl_basic_data p where p.id = d.parent_id) as parentName
+		from tbl_basic_data d
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and d.`name` like concat('%',#{name},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by d.${sidx} ${order}
+            </when>
+			<otherwise>
+                order by d.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tbl_basic_data
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+        </where>
+	</select>
+	 
+	<insert id="save" parameterType="cn.jhsoft.finance.modules.pm.entity.BasicDataEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_basic_data
+		(
+			`parent_id`, 
+			`name`, 
+			`ename`,
+			`order_num`,
+			`create_time`, 
+			`create_adminid`
+		)
+		values
+		(
+			#{parentId}, 
+			#{name}, 
+			#{ename},
+			#{orderNum},
+			#{createTime}, 
+			#{createAdminid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.jhsoft.finance.modules.pm.entity.BasicDataEntity">
+		update tbl_basic_data 
+		<set>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="ename != null">`ename` = #{ename}, </if>
+			<if test="orderNum != null">`order_num` = #{orderNum}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createAdminid != null">`create_adminid` = #{createAdminid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_basic_data where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tbl_basic_data where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="queryBasicDataIdList" resultType="long">
+		select id from tbl_basic_data where parent_id = #{value}
+	</select>
+
+	<select id="queryBasicDataIdListByEname" resultType="long">
+		select id from tbl_basic_data where ename = #{value}
+	</select>
+
+</mapper>
