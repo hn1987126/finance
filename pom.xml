@@ -164,7 +164,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<envType>dev</envType>
+				<env-type>dev</env-type>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -173,7 +173,7 @@
 		<profile>
 			<id>pro</id>
 			<properties>
-				<envType>pro</envType>
+				<env-type>pro</env-type>
 			</properties>
 		</profile>
 	</profiles>
@@ -206,7 +206,7 @@
 						<command>pkill -f ${pack-name}</command>
 						<command>rm -f ${service-path}/${artifactId}.log</command>
 						<!-- Restart jar package，write result into renren.log -->
-						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} > ${service-path}/${artifactId}.log 2>&1 & ]]></command>
+						<command><![CDATA[. /etc/profile; nohup java -jar ${service-path}/${pack-name} > ${service-path}/${artifactId}.log 2>&1 & ]]></command>
 						<command><![CDATA[netstat -nptl]]></command>
 						<command><![CDATA[ps -ef | grep java | grep -v grep]]></command>
 					</commands>
