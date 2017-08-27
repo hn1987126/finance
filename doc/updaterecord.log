@@ -1,0 +1,77 @@
+1、src/main/resources/static/libs里加入了 jquery.jqprint-0.3.js 和 ajaxfileupload.js
+
+################################################################################
+2、src/main/resources/static/js/common.js 里：
+//重写alert
+window.alert = function(msg, callback){ 里加入：
+
+
+// 优化... 避免驾车按钮多次提交
+    // 先拦截回车按钮，如果是回车的话，避免再次执行alert
+    $(document).on('keydown', function(e){  //document为当前元素，限制范围，如果不限制的话会一直有事件
+        if(e.keyCode == 13){
+            window.event.returnValue = false;
+            parent.layer.close(parent.layer.index);
+            if(typeof(callback) === "function"){
+                callback("ok");
+                callback = "";
+            }
+        }
+    });
+
+
+//重写confirm式样框
+window.confirm = function(msg, callback){ 里加入：
+
+
+    // 回车 后，执行 [确定] 的操作
+        $(document).on('keydown', function(e){  //document为当前元素，限制范围，如果不限制的话会一直有事件
+            if(e.keyCode == 13){
+                window.event.returnValue = false;
+                parent.layer.close(parent.layer.index);
+                if(typeof(callback) === "function"){
+                    callback("ok");
+                    callback = "";
+                }
+            }
+        });
+
+
+
+################################################################################
+3、src/main/resources/static/css/main.css
+加入：
+
+.panel .table th { font-weight: bold }
+.panel-body .table tr td:nth-child(2n) { font-weight: bold }
+.panel-body .table tr td:nth-child(2n-1) { background: #eeeeee;width: 150px;text-align: right;}
+
+
+################################################################################
+4、src/main/resources/application.yml
+spring:
+    # 环境 dev|test|pro，在pom.xml里进行了配置，默认是 dev
+    profiles:
+        active: @envType@
+
+5、pom.xml
+    <!--配置文件，默认 spring.profiles.active 这个节点是传进去 dev，如果在打包时，需要加参数 -P pro，在application.yml配置文件中，需要这样取数据   @spring.profiles.active@ -->
+    	<profiles>
+    		<profile>
+    			<id>dev</id>
+    			<properties>
+    				<envType>dev</envType>
+    			</properties>
+    			<activation>
+    				<activeByDefault>true</activeByDefault>
+    			</activation>
+    		</profile>
+    		<profile>
+    			<id>pro</id>
+    			<properties>
+    				<envType>pro</envType>
+    			</properties>
+    		</profile>
+    	</profiles>
+
+
