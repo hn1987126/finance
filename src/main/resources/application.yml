@@ -5,13 +5,13 @@ server:
         max-threads: 1000
         min-spare-threads: 30
     port: 8088
-    #context-path: /renren-fastplus
+    #context-path: /finance
 
 # mysql
 spring:
-    # 环境 dev|test|pro
+    # 环境 dev|test|pro，在pom.xml里进行了配置，默认是 dev
     profiles:
-        active: dev
+        active: @envType@
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver

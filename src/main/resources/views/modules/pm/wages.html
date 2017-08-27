@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>工资</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+	<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+	<link rel="stylesheet" href="../../css/main.css">
+	<script src="../../libs/jquery.min.js"></script>
+	<script src="../../plugins/layer/layer.js"></script>
+	<script src="../../libs/bootstrap.min.js"></script>
+	<script src="../../libs/vue.min.js"></script>
+	<script src="../../libs/ajaxfileupload.js"></script>
+	<script src="../../libs/jquery.jqprint-0.3.js"></script>
+	<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+	<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+	<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+	<script src="../../js/common.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<a v-if="hasPermission('pm:wages:save')" class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;导入</a>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList && !showDetail" class="panel panel-default">
+		<div class="panel-heading">导入</div>
+		<form class="form-horizontal">
+
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">选择文件</div>
+			   	<div class="col-sm-10">
+					<input type="file" name="file" id="file" />
+			    </div>
+			</div>
+
+
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+
+	<div v-show="showDetail" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+
+		<div class="panel-body" id="printDiv">
+			<table class="table">
+				<tr>
+					<td>人员姓名</td>
+					<td>{{userinfo.relname}}</td>
+					<td>人员编码</td>
+					<td>{{userinfo.username}}</td>
+					<td>身份证号</td>
+					<td>{{userinfo.idNumber}}</td>
+					<td>工资卡号</td>
+					<td>{{userinfo.cardNumber}}</td>
+				</tr>
+				<tr>
+					<td>职务工资</td>
+					<td>{{wages.jobWage}}</td>
+					<td>基本工资</td>
+					<td>{{wages.basicWage}}</td>
+					<td>级别工资</td>
+					<td>{{wages.levelWage}}</td>
+					<td>基础工资</td>
+					<td>{{wages.basicsWage}}</td>
+				</tr>
+				<tr>
+					<td>工龄工资</td>
+					<td>{{wages.workingYearWage}}</td>
+					<td>技术等级工资</td>
+					<td>{{wages.techLevelWage}}</td>
+					<td>见习工资</td>
+					<td>{{wages.traineeWage}}</td>
+					<td>活工资</td>
+					<td>{{wages.liveWage}}</td>
+				</tr>
+				<tr>
+					<td>特区津贴</td>
+					<td>{{wages.zoneAllowance}}</td>
+					<td>保留津贴</td>
+					<td>{{wages.retainAllowance}}</td>
+					<td>工作性补贴(奖金)</td>
+					<td>{{wages.bonus}}</td>
+					<td>改革性补贴(房补)</td>
+					<td>{{wages.houseSubsidy}}</td>
+				</tr>
+				<tr>
+					<td>生活性补贴(物补)</td>
+					<td>{{wages.lifeSubsidy}}</td>
+					<td>特岗津贴</td>
+					<td>{{wages.specialAllowance}}</td>
+					<td>临岗津贴</td>
+					<td>{{wages.tmpAllowance}}</td>
+					<td>独生子女费</td>
+					<td>{{wages.childCost}}</td>
+				</tr>
+				<tr>
+					<td>离退休增资全国</td>
+					<td>{{wages.retireCostWhole}}</td>
+					<td>离退休增资特区</td>
+					<td>{{wages.retireCostZone}}</td>
+					<td>离退休补贴经费</td>
+					<td>{{wages.retireCost}}</td>
+					<td>年度考核奖</td>
+					<td>{{wages.checkYearBonus}}</td>
+				</tr>
+				<tr>
+					<td>其他</td>
+					<td>{{wages.otherBonus}}</td>
+					<td>岗位津贴</td>
+					<td>{{wages.postBonus}}</td>
+					<td>绩效工资</td>
+					<td>{{wages.meritPay}}</td>
+					<td>薪级工资</td>
+					<td>{{wages.wagePay}}</td>
+				</tr>
+				<tr>
+					<td>执法薪级工资</td>
+					<td>{{wages.lawWagePay}}</td>
+					<td>套转差额</td>
+					<td>{{wages.difference}}</td>
+					<td>其他增补</td>
+					<td>{{wages.otherSubsidy}}</td>
+					<td>养老补差</td>
+					<td>{{wages.pensionDiff}}</td>
+				</tr>
+				<tr>
+					<td>基层补贴</td>
+					<td>{{wages.basicSubsidy}}</td>
+					<td>临时补贴</td>
+					<td>{{wages.tmpSubsidy}}</td>
+					<td>应发工资</td>
+					<td>{{wages.shouldWage}}</td>
+					<td>养老基数</td>
+					<td>{{wages.pensionBase}}</td>
+				</tr>
+				<tr>
+					<td>年金合计</td>
+					<td>{{wages.totalAnnuity}}</td>
+					<td>职业年金(单位)</td>
+					<td>{{wages.companyAnnuity}}</td>
+					<td>职业年金(个人)</td>
+					<td>{{wages.personalAnnuity}}</td>
+					<td>个人社保合计</td>
+					<td>{{wages.personalSocial}}</td>
+				</tr>
+				<tr>
+					<td>个人医疗</td>
+					<td>{{wages.personalMedical}}</td>
+					<td>个人养老</td>
+					<td>{{wages.personalPension}}</td>
+					<td>个人统筹医疗</td>
+					<td>{{wages.personalPensionCase}}</td>
+					<td>所得税</td>
+					<td>{{wages.incomeTax}}</td>
+				</tr>
+				<tr>
+					<td>反税</td>
+					<td>{{wages.antiTax}}</td>
+					<td>其他应扣</td>
+					<td>{{wages.otherDeduction}}</td>
+					<td>个人公积金</td>
+					<td>{{wages.personalFund}}</td>
+					<td>代缴</td>
+					<td>{{wages.replacePay}}</td>
+				</tr>
+				<tr>
+					<td>实发工资</td>
+					<td>{{wages.actualWages}}</td>
+					<td>房改补贴</td>
+					<td>{{wages.housingSubsidy}}</td>
+					<td>单位公积金</td>
+					<td>{{wages.companyFund}}</td>
+					<td>单位社保合计</td>
+					<td>{{wages.companySocial}}</td>
+				</tr>
+				<tr>
+					<td>单位医疗</td>
+					<td>{{wages.companyMedical}}</td>
+					<td>单位养老</td>
+					<td>{{wages.companyPension}}</td>
+					<td>支付状态</td>
+					<td>{{wages.payStatus == 0 ? "未支付" : "已支付"}}</td>
+				</tr>
+			</table>
+
+		</div>
+
+
+		<!--<table class="table">-->
+			<!--<th>人员姓名</th>-->
+			<!--<th>职务工资</th>-->
+			<!--<th>基本工资</th>-->
+			<!--<th>级别工资</th>-->
+			<!--<th>基础工资</th>-->
+			<!--<th>工龄工资</th>-->
+			<!--<th>技术等级工资</th>-->
+			<!--<th>见习工资</th>-->
+			<!--<th>活工资</th>-->
+			<!--<th>特区津贴</th>-->
+
+
+			<!--<tr>-->
+				<!--<td>{{userinfo.relname}}</td>-->
+				<!--<td>{{wages.jobWage}}</td>-->
+				<!--<td>{{wages.basicWage}}</td>-->
+				<!--<td>{{wages.levelWage}}</td>-->
+				<!--<td>{{wages.basicsWage}}</td>-->
+				<!--<td>{{wages.workingYearWage}}</td>-->
+				<!--<td>{{wages.techLevelWage}}</td>-->
+				<!--<td>{{wages.traineeWage}}</td>-->
+				<!--<td>{{wages.liveWage}}</td>-->
+				<!--<td>{{wages.zoneAllowance}}</td>-->
+
+			<!--</tr>-->
+		<!--</table>-->
+
+		<!--<table class="table">-->
+
+			<!--<th>保留津贴</th>-->
+			<!--<th>工作性补贴(奖金)</th>-->
+			<!--<th>改革性补贴(房补)</th>-->
+			<!--<th>生活性补贴(物补)</th>-->
+			<!--<th>特岗津贴</th>-->
+			<!--<th>临岗津贴</th>-->
+			<!--<th>独生子女费</th>-->
+			<!--<th>离退休增资全国</th>-->
+			<!--<th>离退休增资特区</th>-->
+			<!--<th>离退休补贴经费</th>-->
+
+			<!--<tr>-->
+				<!--<td>{{wages.retainAllowance}}</td>-->
+				<!--<td>{{wages.bonus}}</td>-->
+				<!--<td>{{wages.houseSubsidy}}</td>-->
+				<!--<td>{{wages.lifeSubsidy}}</td>-->
+				<!--<td>{{wages.specialAllowance}}</td>-->
+				<!--<td>{{wages.tmpAllowance}}</td>-->
+				<!--<td>{{wages.childCost}}</td>-->
+				<!--<td>{{wages.retireCostWhole}}</td>-->
+				<!--<td>{{wages.retireCostZone}}</td>-->
+				<!--<td>{{wages.retireCost}}</td>-->
+			<!--</tr>-->
+
+		<!--</table>-->
+
+		<!--<table class="table">-->
+
+			<!--<th>年度考核奖</th>-->
+			<!--<th>其他</th>-->
+			<!--<th>岗位津贴</th>-->
+			<!--<th>绩效工资</th>-->
+			<!--<th>薪级工资</th>-->
+			<!--<th>执法薪级工资</th>-->
+			<!--<th>套转差额</th>-->
+			<!--<th>其他增补</th>-->
+			<!--<th>养老补差</th>-->
+			<!--<th>基层补贴</th>-->
+
+			<!--<tr>-->
+				<!--<td>{{wages.checkYearBonus}}</td>-->
+				<!--<td>{{wages.otherBonus}}</td>-->
+				<!--<td>{{wages.postBonus}}</td>-->
+				<!--<td>{{wages.meritPay}}</td>-->
+				<!--<td>{{wages.wagePay}}</td>-->
+				<!--<td>{{wages.lawWagePay}}</td>-->
+				<!--<td>{{wages.difference}}</td>-->
+				<!--<td>{{wages.otherSubsidy}}</td>-->
+				<!--<td>{{wages.pensionDiff}}</td>-->
+				<!--<td>{{wages.basicSubsidy}}</td>-->
+			<!--</tr>-->
+
+		<!--</table>-->
+
+		<!--<table class="table">-->
+
+			<!--<th>临时补贴</th>-->
+			<!--<th>应发工资</th>-->
+			<!--<th>养老基数</th>-->
+			<!--<th>年金合计</th>-->
+			<!--<th>职业年金(单位)</th>-->
+			<!--<th>职业年金(个人)</th>-->
+			<!--<th>个人社保合计</th>-->
+			<!--<th>个人医疗</th>-->
+			<!--<th>个人养老</th>-->
+			<!--<th>个人统筹医疗</th>-->
+
+			<!--<tr>-->
+				<!--<td>{{wages.tmpSubsidy}}</td>-->
+				<!--<td>{{wages.shouldWage}}</td>-->
+				<!--<td>{{wages.pensionBase}}</td>-->
+				<!--<td>{{wages.totalAnnuity}}</td>-->
+				<!--<td>{{wages.companyAnnuity}}</td>-->
+				<!--<td>{{wages.personalAnnuity}}</td>-->
+				<!--<td>{{wages.personalSocial}}</td>-->
+				<!--<td>{{wages.personalMedical}}</td>-->
+				<!--<td>{{wages.personalPension}}</td>-->
+				<!--<td>{{wages.personalPensionCase}}</td>-->
+			<!--</tr>-->
+		<!--</table>-->
+
+		<!--<table class="table">-->
+
+			<!--<th>所得税</th>-->
+			<!--<th>反税</th>-->
+			<!--<th>其他应扣</th>-->
+			<!--<th>个人公积金</th>-->
+			<!--<th>代缴</th>-->
+			<!--<th>实发工资</th>-->
+			<!--<th>房改补贴</th>-->
+			<!--<th>单位公积金</th>-->
+			<!--<th>单位社保合计</th>-->
+			<!--<th>单位医疗</th>-->
+
+			<!--<tr>-->
+				<!--<td>{{wages.incomeTax}}</td>-->
+				<!--<td>{{wages.antiTax}}</td>-->
+				<!--<td>{{wages.otherDeduction}}</td>-->
+				<!--<td>{{wages.personalFund}}</td>-->
+				<!--<td>{{wages.replacePay}}</td>-->
+				<!--<td>{{wages.actualWages}}</td>-->
+				<!--<td>{{wages.housingSubsidy}}</td>-->
+				<!--<td>{{wages.companyFund}}</td>-->
+				<!--<td>{{wages.companySocial}}</td>-->
+				<!--<td>{{wages.companyMedical}}</td>-->
+			<!--</tr>-->
+		<!--</table>-->
+
+		<!--<table class="table">-->
+
+			<!--<th>单位养老</th>-->
+			<!--<th>支付状态</th>-->
+			<!--<th>导入时间</th>-->
+			<!--<th>人员编码</th>-->
+			<!--<th>身份证号</th>-->
+			<!--<th>工资卡号</th>-->
+
+			<!--<tr>-->
+				<!--<td>{{wages.companyPension}}</td>-->
+				<!--<td>{{wages.payStatus == 0 ? "未支付" : "已支付"}}</td>-->
+				<!--<td>{{wages.createTime}}</td>-->
+				<!--<td>{{userinfo.username}}</td>-->
+				<!--<td>{{userinfo.idNumber}}</td>-->
+				<!--<td>{{userinfo.cardNumber}}</td>-->
+			<!--</tr>-->
+		<!--</table>-->
+
+
+
+		<div class="form-group">
+			<div class="col-sm-2 control-label"></div>
+			<input type="button" class="btn btn-primary" @click="print" value="打印"/>
+			&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+		</div>
+	</div>
+
+
+</div>
+
+<script src="../../js/modules/pm/wages.js"></script>
+</body>
+</html>

@@ -58,14 +58,14 @@ public class BasicDataController extends AbstractController {
 		Map<String, Object> map = new HashMap<>();
 		List<BasicDataEntity> basicDataList = basicDataService.queryList(map);
 
-		//添加一级数据
-		if(getUserId() == Constant.SUPER_ADMIN){
-			BasicDataEntity root = new BasicDataEntity();
-			root.setId(0L);
-			root.setName("一级数据");
-			root.setParentId(-1L);
-			basicDataList.add(root);
-		}
+//		//添加一级数据
+//		if(getUserId() == Constant.SUPER_ADMIN){
+//			BasicDataEntity root = new BasicDataEntity();
+//			root.setId(0L);
+//			root.setName("一级数据");
+//			root.setParentId(-1L);
+//			basicDataList.add(root);
+//		}
 
 		return R.ok().put("basicDataList", basicDataList);
 	}

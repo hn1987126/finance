@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.jhsoft.finance.modules.pm.dao.WagesDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.jhsoft.finance.modules.pm.entity.WagesEntity" id="wagesMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="jobWage" column="job_wage"/>
+        <result property="basicWage" column="basic_wage"/>
+        <result property="levelWage" column="level_wage"/>
+        <result property="basicsWage" column="basics_wage"/>
+        <result property="workingYearWage" column="working_year_wage"/>
+        <result property="techLevelWage" column="tech_level_wage"/>
+        <result property="traineeWage" column="trainee_wage"/>
+        <result property="liveWage" column="live_wage"/>
+        <result property="zoneAllowance" column="zone_allowance"/>
+        <result property="retainAllowance" column="retain_allowance"/>
+        <result property="bonus" column="bonus"/>
+        <result property="houseSubsidy" column="house_subsidy"/>
+        <result property="lifeSubsidy" column="life_subsidy"/>
+        <result property="specialAllowance" column="special_allowance"/>
+        <result property="tmpAllowance" column="tmp_allowance"/>
+        <result property="childCost" column="child_cost"/>
+        <result property="retireCostWhole" column="retire_cost_whole"/>
+        <result property="retireCostZone" column="retire_cost_zone"/>
+        <result property="retireCost" column="retire_cost"/>
+        <result property="checkYearBonus" column="check_year_bonus"/>
+        <result property="otherBonus" column="other_bonus"/>
+        <result property="postBonus" column="post_bonus"/>
+        <result property="meritPay" column="merit_pay"/>
+        <result property="wagePay" column="wage_pay"/>
+        <result property="lawWagePay" column="law_wage_pay"/>
+        <result property="difference" column="difference"/>
+        <result property="otherSubsidy" column="other_subsidy"/>
+        <result property="pensionDiff" column="pension_diff"/>
+        <result property="basicSubsidy" column="basic_subsidy"/>
+        <result property="tmpSubsidy" column="tmp_subsidy"/>
+        <result property="shouldWage" column="should_wage"/>
+        <result property="pensionBase" column="pension_base"/>
+        <result property="totalAnnuity" column="total_annuity"/>
+        <result property="companyAnnuity" column="company_annuity"/>
+        <result property="personalAnnuity" column="personal_annuity"/>
+        <result property="personalSocial" column="personal_social"/>
+        <result property="personalMedical" column="personal_medical"/>
+        <result property="personalPension" column="personal_pension"/>
+        <result property="personalPensionCase" column="personal_pension_case"/>
+        <result property="incomeTax" column="income_tax"/>
+        <result property="antiTax" column="anti_tax"/>
+        <result property="otherDeduction" column="other_deduction"/>
+        <result property="personalFund" column="personal_fund"/>
+        <result property="replacePay" column="replace_pay"/>
+        <result property="actualWages" column="actual_wages"/>
+        <result property="housingSubsidy" column="housing_subsidy"/>
+        <result property="companyFund" column="company_fund"/>
+        <result property="companySocial" column="company_social"/>
+        <result property="companyMedical" column="company_medical"/>
+        <result property="companyPension" column="company_pension"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createAdminid" column="create_adminid"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="cn.jhsoft.finance.modules.pm.entity.WagesEntity">
+		select * from tbl_wages where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="cn.jhsoft.finance.modules.pm.entity.WagesEntity">
+		select d.*,(select p.relname from sys_user p where p.user_id = d.user_id) as userRelname
+		from tbl_wages d
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and d.`name` like concat('%',#{name},'%')
+            </if>
+			<if test="userId != 0 and userId != null">
+				and d.`user_id` = #{userId}
+			</if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by d.${sidx} ${order}
+            </when>
+			<otherwise>
+                order by d.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tbl_wages
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and `name` like concat('%',#{name},'%')
+            </if>
+			<if test="userId != 0 and userId != null">
+				and `user_id` = #{userId}
+			</if>
+        </where>
+	</select>
+	 
+	<insert id="save" parameterType="cn.jhsoft.finance.modules.pm.entity.WagesEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into tbl_wages
+		(
+			`user_id`, 
+			`job_wage`, 
+			`basic_wage`, 
+			`level_wage`, 
+			`basics_wage`, 
+			`working_year_wage`, 
+			`tech_level_wage`, 
+			`trainee_wage`, 
+			`live_wage`, 
+			`zone_allowance`, 
+			`retain_allowance`, 
+			`bonus`, 
+			`house_subsidy`, 
+			`life_subsidy`, 
+			`special_allowance`, 
+			`tmp_allowance`, 
+			`child_cost`, 
+			`retire_cost_whole`, 
+			`retire_cost_zone`, 
+			`retire_cost`, 
+			`check_year_bonus`, 
+			`other_bonus`, 
+			`post_bonus`, 
+			`merit_pay`, 
+			`wage_pay`, 
+			`law_wage_pay`, 
+			`difference`, 
+			`other_subsidy`, 
+			`pension_diff`, 
+			`basic_subsidy`, 
+			`tmp_subsidy`, 
+			`should_wage`, 
+			`pension_base`, 
+			`total_annuity`, 
+			`company_annuity`, 
+			`personal_annuity`, 
+			`personal_social`, 
+			`personal_medical`, 
+			`personal_pension`, 
+			`personal_pension_case`, 
+			`income_tax`, 
+			`anti_tax`, 
+			`other_deduction`, 
+			`personal_fund`, 
+			`replace_pay`, 
+			`actual_wages`, 
+			`housing_subsidy`, 
+			`company_fund`, 
+			`company_social`, 
+			`company_medical`, 
+			`company_pension`, 
+			`pay_status`, 
+			`create_time`, 
+			`create_adminid`
+		)
+		values
+		(
+			#{userId}, 
+			#{jobWage}, 
+			#{basicWage}, 
+			#{levelWage}, 
+			#{basicsWage}, 
+			#{workingYearWage}, 
+			#{techLevelWage}, 
+			#{traineeWage}, 
+			#{liveWage}, 
+			#{zoneAllowance}, 
+			#{retainAllowance}, 
+			#{bonus}, 
+			#{houseSubsidy}, 
+			#{lifeSubsidy}, 
+			#{specialAllowance}, 
+			#{tmpAllowance}, 
+			#{childCost}, 
+			#{retireCostWhole}, 
+			#{retireCostZone}, 
+			#{retireCost}, 
+			#{checkYearBonus}, 
+			#{otherBonus}, 
+			#{postBonus}, 
+			#{meritPay}, 
+			#{wagePay}, 
+			#{lawWagePay}, 
+			#{difference}, 
+			#{otherSubsidy}, 
+			#{pensionDiff}, 
+			#{basicSubsidy}, 
+			#{tmpSubsidy}, 
+			#{shouldWage}, 
+			#{pensionBase}, 
+			#{totalAnnuity}, 
+			#{companyAnnuity}, 
+			#{personalAnnuity}, 
+			#{personalSocial}, 
+			#{personalMedical}, 
+			#{personalPension}, 
+			#{personalPensionCase}, 
+			#{incomeTax}, 
+			#{antiTax}, 
+			#{otherDeduction}, 
+			#{personalFund}, 
+			#{replacePay}, 
+			#{actualWages}, 
+			#{housingSubsidy}, 
+			#{companyFund}, 
+			#{companySocial}, 
+			#{companyMedical}, 
+			#{companyPension}, 
+			#{payStatus}, 
+			#{createTime}, 
+			#{createAdminid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.jhsoft.finance.modules.pm.entity.WagesEntity">
+		update tbl_wages 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="jobWage != null">`job_wage` = #{jobWage}, </if>
+			<if test="basicWage != null">`basic_wage` = #{basicWage}, </if>
+			<if test="levelWage != null">`level_wage` = #{levelWage}, </if>
+			<if test="basicsWage != null">`basics_wage` = #{basicsWage}, </if>
+			<if test="workingYearWage != null">`working_year_wage` = #{workingYearWage}, </if>
+			<if test="techLevelWage != null">`tech_level_wage` = #{techLevelWage}, </if>
+			<if test="traineeWage != null">`trainee_wage` = #{traineeWage}, </if>
+			<if test="liveWage != null">`live_wage` = #{liveWage}, </if>
+			<if test="zoneAllowance != null">`zone_allowance` = #{zoneAllowance}, </if>
+			<if test="retainAllowance != null">`retain_allowance` = #{retainAllowance}, </if>
+			<if test="bonus != null">`bonus` = #{bonus}, </if>
+			<if test="houseSubsidy != null">`house_subsidy` = #{houseSubsidy}, </if>
+			<if test="lifeSubsidy != null">`life_subsidy` = #{lifeSubsidy}, </if>
+			<if test="specialAllowance != null">`special_allowance` = #{specialAllowance}, </if>
+			<if test="tmpAllowance != null">`tmp_allowance` = #{tmpAllowance}, </if>
+			<if test="childCost != null">`child_cost` = #{childCost}, </if>
+			<if test="retireCostWhole != null">`retire_cost_whole` = #{retireCostWhole}, </if>
+			<if test="retireCostZone != null">`retire_cost_zone` = #{retireCostZone}, </if>
+			<if test="retireCost != null">`retire_cost` = #{retireCost}, </if>
+			<if test="checkYearBonus != null">`check_year_bonus` = #{checkYearBonus}, </if>
+			<if test="otherBonus != null">`other_bonus` = #{otherBonus}, </if>
+			<if test="postBonus != null">`post_bonus` = #{postBonus}, </if>
+			<if test="meritPay != null">`merit_pay` = #{meritPay}, </if>
+			<if test="wagePay != null">`wage_pay` = #{wagePay}, </if>
+			<if test="lawWagePay != null">`law_wage_pay` = #{lawWagePay}, </if>
+			<if test="difference != null">`difference` = #{difference}, </if>
+			<if test="otherSubsidy != null">`other_subsidy` = #{otherSubsidy}, </if>
+			<if test="pensionDiff != null">`pension_diff` = #{pensionDiff}, </if>
+			<if test="basicSubsidy != null">`basic_subsidy` = #{basicSubsidy}, </if>
+			<if test="tmpSubsidy != null">`tmp_subsidy` = #{tmpSubsidy}, </if>
+			<if test="shouldWage != null">`should_wage` = #{shouldWage}, </if>
+			<if test="pensionBase != null">`pension_base` = #{pensionBase}, </if>
+			<if test="totalAnnuity != null">`total_annuity` = #{totalAnnuity}, </if>
+			<if test="companyAnnuity != null">`company_annuity` = #{companyAnnuity}, </if>
+			<if test="personalAnnuity != null">`personal_annuity` = #{personalAnnuity}, </if>
+			<if test="personalSocial != null">`personal_social` = #{personalSocial}, </if>
+			<if test="personalMedical != null">`personal_medical` = #{personalMedical}, </if>
+			<if test="personalPension != null">`personal_pension` = #{personalPension}, </if>
+			<if test="personalPensionCase != null">`personal_pension_case` = #{personalPensionCase}, </if>
+			<if test="incomeTax != null">`income_tax` = #{incomeTax}, </if>
+			<if test="antiTax != null">`anti_tax` = #{antiTax}, </if>
+			<if test="otherDeduction != null">`other_deduction` = #{otherDeduction}, </if>
+			<if test="personalFund != null">`personal_fund` = #{personalFund}, </if>
+			<if test="replacePay != null">`replace_pay` = #{replacePay}, </if>
+			<if test="actualWages != null">`actual_wages` = #{actualWages}, </if>
+			<if test="housingSubsidy != null">`housing_subsidy` = #{housingSubsidy}, </if>
+			<if test="companyFund != null">`company_fund` = #{companyFund}, </if>
+			<if test="companySocial != null">`company_social` = #{companySocial}, </if>
+			<if test="companyMedical != null">`company_medical` = #{companyMedical}, </if>
+			<if test="companyPension != null">`company_pension` = #{companyPension}, </if>
+			<if test="payStatus != null">`pay_status` = #{payStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createAdminid != null">`create_adminid` = #{createAdminid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_wages where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tbl_wages where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

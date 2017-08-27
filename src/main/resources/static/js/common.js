@@ -66,6 +66,20 @@ function hasPermission(permission) {
 
 //重写alert
 window.alert = function(msg, callback){
+
+    // 优化... 避免驾车按钮多次提交
+    // 先拦截回车按钮，如果是回车的话，避免再次执行alert
+    $(document).on('keydown', function(e){  //document为当前元素，限制范围，如果不限制的话会一直有事件
+        if(e.keyCode == 13){
+            window.event.returnValue = false;
+            parent.layer.close(parent.layer.index);
+            if(typeof(callback) === "function"){
+                callback("ok");
+                callback = "";
+            }
+        }
+    });
+
 	parent.layer.alert(msg, function(index){
 		parent.layer.close(index);
 		if(typeof(callback) === "function"){
@@ -76,6 +90,19 @@ window.alert = function(msg, callback){
 
 //重写confirm式样框
 window.confirm = function(msg, callback){
+
+    // 回车 后，执行 [确定] 的操作
+    $(document).on('keydown', function(e){  //document为当前元素，限制范围，如果不限制的话会一直有事件
+        if(e.keyCode == 13){
+            window.event.returnValue = false;
+            parent.layer.close(parent.layer.index);
+            if(typeof(callback) === "function"){
+                callback("ok");
+                callback = "";
+            }
+        }
+    });
+
 	parent.layer.confirm(msg, {btn: ['确定','取消']},
 	function(){//确定事件
 		if(typeof(callback) === "function"){

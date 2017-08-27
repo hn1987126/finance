@@ -32,13 +32,14 @@
 		<qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
 		<aliyun.oss.version>2.5.0</aliyun.oss.version>
 		<qcloud.cos.version>4.4</qcloud.cos.version>
+		<poi.version>3.14</poi.version>
 
 		<!--wagon plugin 配置-->
-		<service-path>/work/renren</service-path>
+		<service-path>/root/${artifactId}</service-path>
 		<pack-name>${artifactId}-${version}.jar</pack-name>
-		<remote-addr>192.168.1.10:22</remote-addr>
+		<remote-addr>118.190.23.142:22</remote-addr>
 		<remote-username>root</remote-username>
-		<remote-passwd>123456</remote-passwd>
+		<remote-passwd>1qaz*()_kl%4FGk_k:l|.H^*($#</remote-passwd>
 	</properties>
 
 	<dependencies>
@@ -144,7 +145,38 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
 	</dependencies>
+
+	<!--配置文件，默认 spring.profiles.active 这个节点是传进去 dev，如果在打包时，需要加参数 -P pro，在application.yml配置文件中，需要这样取数据   @spring.profiles.active@ -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<envType>dev</envType>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>pro</id>
+			<properties>
+				<envType>pro</envType>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<extensions>
@@ -172,13 +204,14 @@
 					<commands>
 						<!-- Kill Old Process -->
 						<command>pkill -f ${pack-name}</command>
-						<command>rm -f ${service-path}/renren.log</command>
+						<command>rm -f ${service-path}/${artifactId}.log</command>
 						<!-- Restart jar package，write result into renren.log -->
-						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} > ${service-path}/renren.log 2>&1 & ]]></command>
+						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} > ${service-path}/${artifactId}.log 2>&1 & ]]></command>
 						<command><![CDATA[netstat -nptl]]></command>
 						<command><![CDATA[ps -ef | grep java | grep -v grep]]></command>
 					</commands>
-					<!-- 运行命令 mvn clean package wagon:upload-single wagon:sshexec-->
+					<!-- 运行命令 mvn clean package -P pro wagon:upload-single wagon:sshexec   注意在idea里加的时候不需要前面的 mvn，因为它默认就有-->
+					<!--这需要在 idea 的run里 【Edit Configurations】 新建一个 maven的，标题为 wagon ，Command Line 为【clean package -P pro wagon:upload-single wagon:sshexec】,其他不用填，再运行即可完成自动化部署。 -->
 					<displayCommandOutputs>true</displayCommandOutputs>
 				</configuration>
 			</plugin>

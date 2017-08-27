@@ -12,6 +12,9 @@
 			<if test="username != null and username.trim() != ''">
 				and u.`username` like concat('%',#{username},'%')
 			</if>
+			<if test="isSuperAdmin == 0">
+				and u.`user_id` != 1
+			</if>
 		</where>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -31,6 +34,9 @@
 		<where>
 			<if test="username != null and username.trim() != ''">
 				and `username` like concat('%',#{username},'%') 
+			</if>
+			<if test="isSuperAdmin == 0">
+				and `user_id` != 1
 			</if>
 		</where>
 	</select>
@@ -65,6 +71,9 @@
 			`mobile`, 
 			`status`,
 			`dept_id`,
+			`id_number`,
+			`card_number`,
+			`relname`,
 			`create_time`
 		)
 		values
@@ -77,6 +86,9 @@
 			#{mobile}, 
 			#{status},
 			#{deptId},
+			#{idNumber},
+			#{cardNumber},
+			#{relname},
 			#{createTime}
 		)
 	</insert>
@@ -90,6 +102,9 @@
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="idNumber != null">`id_number` = #{idNumber}, </if>
+			<if test="cardNumber != null">`card_number` = #{cardNumber}, </if>
+			<if test="relname != null">`relname` = #{relname}, </if>
 		</set>
 		where user_id = #{userId}
 	</update>

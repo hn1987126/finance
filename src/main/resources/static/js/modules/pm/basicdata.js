@@ -32,7 +32,7 @@ var vm = new Vue({
                 var node = ztree.getNodeByParam("id", vm.basicdata.parentId);
                 ztree.selectNode(node);
 
-                vm.basicdata.parentName = node.name;
+                vm.basicdata.parentName = node ? node.name : '';
             })
         },
         add: function(){

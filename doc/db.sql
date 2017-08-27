@@ -1,3 +1,4 @@
+drop database jhs_finance;
 CREATE DATABASE IF NOT EXISTS jhs_finance default charset utf8 COLLATE utf8_general_ci;
 use jhs_finance;
 
@@ -35,9 +36,13 @@ CREATE TABLE `sys_user` (
   `status` tinyint COMMENT '状态  0：禁用   1：正常',
   `dept_id` bigint(20) COMMENT '部门ID',
   `create_time` datetime COMMENT '创建时间',
+  `id_number` varchar(50) COMMENT '身份证号',
+  `card_number` varchar(50) COMMENT '工资卡号',
+  `relname` varchar(50) COMMENT '真实姓名',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
+
 
 -- 系统用户Token
 CREATE TABLE `sys_user_token` (
@@ -108,7 +113,7 @@ CREATE TABLE `sys_log` (
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8 COMMENT='系统日志';
 
 -- 初始数据
-INSERT INTO `sys_user` (`user_id`, `username`, `password`, `salt`, `email`, `mobile`, `status`, `create_time`) VALUES ('1', 'admin', '9ec9750e709431dad22365cabc5c625482e574c74adaebba7dd02f1129e4ce1d', 'YzcmCZNvbXocrsz9dm8e', 'hn1987@126.com', '18610556658', '1', '2016-11-11 11:11:11');
+INSERT INTO `sys_user` (`user_id`, `username`, `password`, `salt`, `email`, `mobile`, `status`, `create_time`) VALUES ('1', 'admin', '7e0ffd097b418c6433c4a3a2090a0b902d5b2e37c396730dac06cc8641bf4e0b', 'YzcmCZNvbXocrsz9dm8e', 'hn1987@126.com', '18610556658', '1', '2016-11-11 11:11:11');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('1', '0', '系统管理', NULL, NULL, '0', 'fa fa-cog', '10');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('2', '1', '管理员管理', 'modules/sys/user.html', NULL, '1', 'fa fa-user', '1');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('3', '1', '角色管理', 'modules/sys/role.html', NULL, '1', 'fa fa-user-secret', '2');
@@ -132,23 +137,23 @@ INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, 
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('35', '31', '删除', NULL, 'sys:dept:delete', '2', NULL, '0');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '0', '业务管理', NULL, NULL, '0', 'fa fa-opencart', '1');
 
+insert into sys_role values(1, '工资导入', '', 0, '2017-08-30 12:12:12');
+insert into sys_role values(2, '工资查询', '', 0, '2017-08-30 12:12:12');
+insert into sys_role_menu values(1, 1, 500);
+insert into sys_role_menu values(2, 1, 506);
+insert into sys_role_menu values(3, 1, 507);
+insert into sys_role_menu values(4, 1, 508);
+insert into sys_role_menu values(5, 1, 1);
+insert into sys_role_menu values(6, 1, 2);
+insert into sys_role_menu values(7, 1, 15);
+insert into sys_role_menu values(8, 1, 16);
+insert into sys_role_menu values(9, 1, 17);
+insert into sys_role_menu values(10, 1, 18);
+insert into sys_role_menu values(11, 2, 500);
+insert into sys_role_menu values(12, 2, 506);
+insert into sys_role_menu values(13, 2, 507);
+insert into sys_dept values(1, 0, '一级部门', 0, 0);
 
-
--- 菜单SQL
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '设备', 'modules/pm/device.html', NULL, '1', 'fa fa-recycle', '6');
-set @parentId = @@identity;
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:device:list,pm:device:info', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:device:save', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:device:update', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:device:delete', '2', null, '6';
-
--- 菜单SQL
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '商场', 'modules/pm/mall.html', NULL, '1', 'fa fa-skyatlas', '7');
-set @parentId = @@identity;
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:mall:list,pm:mall:info', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:mall:save', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:mall:update', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:mall:delete', '2', null, '6';
 
 -- 菜单SQL
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '基础数据', 'modules/pm/basicdata.html', NULL, '1', 'fa fa-window-restore', '100');
@@ -158,21 +163,6 @@ INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `or
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:basicdata:update,pm:basicdata:select', '2', null, '6';
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:basicdata:delete', '2', null, '6';
 
-
--- 商场
-DROP TABLE IF EXISTS `tbl_mall`;
-CREATE TABLE IF NOT EXISTS `tbl_mall` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '商场名称',
-  `relname` varchar(32) DEFAULT '' COMMENT '联系人',
-  `tel` varchar(32) DEFAULT '' COMMENT '联系电话',
-  `mobile` varchar(11) DEFAULT '' COMMENT '手机号',
-  `email` varchar(32) DEFAULT '' COMMENT '电子邮箱',
-  `address` varchar(64) DEFAULT '' COMMENT '地址',
-  `create_time` datetime COMMENT '添加时间',
-  `create_adminid` bigint DEFAULT 0 COMMENT '添加人',
-  PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 COMMENT='商场';
 
 
 -- 基础数据
@@ -191,21 +181,71 @@ CREATE TABLE IF NOT EXISTS `tbl_basic_data` (
 insert into tbl_basic_data values (1, 0, 'wifi_group', '探针分组', 1, '2017-08-25 17:10:10', 1);
 
 
--- 设备
-DROP TABLE IF EXISTS `tbl_device`;
-CREATE TABLE IF NOT EXISTS `tbl_device` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `device_num` varchar(32) NOT NULL DEFAULT '' COMMENT '设备号',
-  `name` varchar(64) DEFAULT '' COMMENT '设备名称',
-  `device_model` varchar(64) DEFAULT '' COMMENT '型号',
-  `mac` varchar(32) NOT NULL DEFAULT '' COMMENT '设备mac',
-  `gateway_url` varchar(64) DEFAULT '' COMMENT '网关url',
-  `floor` varchar(10) DEFAULT '' COMMENT '所在楼层',
-  `group_id` int(11) DEFAULT 0 COMMENT '所属分组',
-  `mall_id` int(11) DEFAULT 0 COMMENT '所属商场',
-  `tags` varchar(128) DEFAULT '' COMMENT '标签',
+
+-- 工资
+DROP TABLE IF EXISTS `tbl_wages`;
+CREATE TABLE IF NOT EXISTS `tbl_wages` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT 0 COMMENT '员工',
+  `job_wage` double DEFAULT 0 COMMENT '职务工资',
+  `basic_wage` double DEFAULT 0 COMMENT '基本工资',
+  `level_wage` double DEFAULT 0 COMMENT '级别工资',
+  `basics_wage` double DEFAULT 0 COMMENT '基础工资',
+  `working_year_wage` double DEFAULT 0 COMMENT '工龄工资',
+  `tech_level_wage` double DEFAULT 0 COMMENT '技术等级工资',
+  `trainee_wage` double DEFAULT 0 COMMENT '见习工资',
+  `live_wage` double DEFAULT 0 COMMENT '活工资',
+  `zone_allowance` double DEFAULT 0 COMMENT '特区津贴',
+  `retain_allowance` double DEFAULT 0 COMMENT '保留津贴',
+  `bonus` double DEFAULT 0 COMMENT '工作性补贴(奖金)',
+  `house_subsidy` double DEFAULT 0 COMMENT '改革性补贴(房补)',
+  `life_subsidy` double DEFAULT 0 COMMENT '生活性补贴(物补)',
+  `special_allowance` double DEFAULT 0 COMMENT '特岗津贴',
+  `tmp_allowance` double DEFAULT 0 COMMENT '临岗津贴',
+  `child_cost` double DEFAULT 0 COMMENT '独生子女费',
+  `retire_cost_whole` double DEFAULT 0 COMMENT '离退休增资全国',
+  `retire_cost_zone` double DEFAULT 0 COMMENT '离退休增资特区',
+  `retire_cost` double DEFAULT 0 COMMENT '离退休补贴经费',
+  `check_year_bonus` double DEFAULT 0 COMMENT '年度考核奖',
+  `other_bonus` double DEFAULT 0 COMMENT '其他',
+  `post_bonus` double DEFAULT 0 COMMENT '岗位津贴',
+  `merit_pay` double DEFAULT 0 COMMENT '绩效工资',
+  `wage_pay` double DEFAULT 0 COMMENT '薪级工资',
+  `law_wage_pay` double DEFAULT 0 COMMENT '执法薪级工资',
+  `difference` double DEFAULT 0 COMMENT '套转差额',
+  `other_subsidy` double DEFAULT 0 COMMENT '其他增补',
+  `pension_diff` double DEFAULT 0 COMMENT '养老补差',
+  `basic_subsidy` double DEFAULT 0 COMMENT '基层补贴',
+  `tmp_subsidy` double DEFAULT 0 COMMENT '临时补贴',
+  `should_wage` double DEFAULT 0 COMMENT '应发工资',
+  `pension_base` double DEFAULT 0 COMMENT '养老基数',
+  `total_annuity` double DEFAULT 0 COMMENT '年金合计',
+  `company_annuity` double DEFAULT 0 COMMENT '职业年金(单位)',
+  `personal_annuity` double DEFAULT 0 COMMENT '职业年金(个人)',
+  `personal_social` double DEFAULT 0 COMMENT '个人社保合计',
+  `personal_medical` double DEFAULT 0 COMMENT '个人医疗',
+  `personal_pension` double DEFAULT 0 COMMENT '个人养老',
+  `personal_pension_case` double DEFAULT 0 COMMENT '个人统筹医疗',
+  `income_tax` double DEFAULT 0 COMMENT '所得税',
+  `anti_tax` double DEFAULT 0 COMMENT '反税',
+  `other_deduction` double DEFAULT 0 COMMENT '其他应扣',
+  `personal_fund` double DEFAULT 0 COMMENT '个人公积金',
+  `replace_pay` double DEFAULT 0 COMMENT '代缴',
+  `actual_wages` double DEFAULT 0 COMMENT '实发工资',
+  `housing_subsidy` double DEFAULT 0 COMMENT '房改补贴',
+  `company_fund` double DEFAULT 0 COMMENT '单位公积金',
+  `company_social` double DEFAULT 0 COMMENT '单位社保合计',
+  `company_medical` double DEFAULT 0 COMMENT '单位医疗',
+  `company_pension` double DEFAULT 0 COMMENT '单位养老',
+  `pay_status` tinyint DEFAULT 1 COMMENT '支付状态,0未支付,1已支付',
   `create_time` datetime COMMENT '添加时间',
   `create_adminid` bigint DEFAULT 0 COMMENT '添加人',
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 COMMENT='设备';
+) DEFAULT CHARSET=utf8 COMMENT='工资';
 
+
+-- 菜单SQL
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '工资', 'modules/pm/wages.html', NULL, '1', 'fa fa-calculator', '7');
+set @parentId = @@identity;
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:wages:list,pm:wages:info', '2', null, '6';
+INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '导入', null, 'pm:wages:save', '2', null, '6';

@@ -90,6 +90,21 @@ public class SysUserEntity implements Serializable {
 	private String deptName;
 
 	/**
+	 * 身份证号
+	 */
+	private String idNumber;
+
+	/**
+	 * 卡号
+	 */
+	private String cardNumber;
+
+	/**
+	 * 真实姓名
+	 */
+	private String relname;
+
+	/**
 	 * 设置：
 	 * @param userId 
 	 */
@@ -239,5 +254,29 @@ public class SysUserEntity implements Serializable {
 
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public String getRelname() {
+		return relname;
+	}
+
+	public void setRelname(String relname) {
+		this.relname = relname;
 	}
 }
