@@ -39,7 +39,7 @@
 		<pack-name>${artifactId}-${version}.jar</pack-name>
 		<remote-addr>118.190.23.142:22</remote-addr>
 		<remote-username>root</remote-username>
-		<remote-passwd>1qaz*()_kl%4FGk_k:l|.H^*($#</remote-passwd>
+		<remote-passwd>1qaz*()_kl%4FGk_k:l|.</remote-passwd>
 	</properties>
 
 	<dependencies>
@@ -200,7 +200,7 @@
 				<version>1.0</version>
 				<configuration>
 					<fromFile>target/${pack-name}</fromFile>
-					<url><![CDATA[scp://${remote-username}:${remote-passwd}@${remote-addr}${service-path}]]></url>
+					<url><![CDATA[scp://${remote-username}:${remote-passwd}H^*($#@${remote-addr}${service-path}]]></url>
 					<commands>
 						<!-- Kill Old Process -->
 						<command>pkill -f ${pack-name}</command>
