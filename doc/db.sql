@@ -179,6 +179,8 @@ CREATE TABLE IF NOT EXISTS `tbl_basic_data` (
 ) DEFAULT CHARSET=utf8 COMMENT='基础数据';
 
 insert into tbl_basic_data values (1, 0, 'wifi_group', '探针分组', 1, '2017-08-25 17:10:10', 1);
+insert into tbl_basic_data values (2, 1, '', '分组1', 1, '2017-08-25 17:10:10', 1);
+insert into tbl_basic_data values (3, 1, '', '分组2', 1, '2017-08-25 17:10:10', 1);
 
 
 

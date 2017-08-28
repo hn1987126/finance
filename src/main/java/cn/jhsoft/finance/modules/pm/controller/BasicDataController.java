@@ -49,6 +49,24 @@ public class BasicDataController extends AbstractController {
 		return basicDataList;
 	}
 
+
+	/**
+	 * 根据标识得到子列表
+	 */
+	@RequestMapping("/list/{ename}")
+	@RequiresPermissions("pm:basicdata:list")
+	public List<BasicDataEntity> list(@PathVariable("ename") String ename){
+		List<Long> ids = basicDataService.queryBasicDataIdListByEname(ename);
+		for (Long id : ids) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("parentId", 1);
+			List<BasicDataEntity> basicDataList = basicDataService.queryList(map);
+			return basicDataList;
+		}
+
+		return null;
+	}
+
 	/**
 	 * 选择基础数据(添加、修改菜单)
 	 */

@@ -3,7 +3,7 @@ $(function () {
         url: baseURL + 'pm/wages/list',
         datatype: "json",
         colModel: [			
-			// { label: 'id', name: 'id', index: 'id', width: 35, key: true },
+			{ label: 'id', name: 'id', index: 'id', width: 35, key: true, hidden: true },
             { label: '人员姓名', name: 'userRelname', index: 'user_id', width: 60, formatter: function(value, options, row){
                 return '<a href="javascript:void(0);" onclick="vm.detail('+row.id+')">'+value+'</a>';
             }},
@@ -68,7 +68,7 @@ $(function () {
         height: 385,
         rowNum: 10,
 		rowList : [10,30,50],
-        rownumbers: false,
+        rownumbers: true,
         rownumWidth: 25, 
         autowidth:true,
         multiselect: true,

@@ -3,7 +3,7 @@ $(function () {
         url: baseURL + 'pm/mall/list',
         datatype: "json",
         colModel: [			
-			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
+			{ label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true },
 			{ label: '商场名称', name: 'name', index: 'name', width: 80 }, 			
 			{ label: '联系人', name: 'relname', index: 'relname', width: 80 }, 			
 			{ label: '联系电话', name: 'tel', index: 'tel', width: 80 }, 			

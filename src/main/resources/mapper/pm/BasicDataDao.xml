@@ -25,6 +25,12 @@
             <if test="name != null and name.trim() != ''">
                 and d.`name` like concat('%',#{name},'%')
             </if>
+			<if test="ename != null and ename.trim() != ''">
+				and d.`ename` like concat('%',#{ename},'%')
+			</if>
+			<if test="parentId != null">
+				and d.`parent_id` = #{parentId}
+			</if>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -45,6 +51,12 @@
             <if test="name != null and name.trim() != ''">
                 and `name` like concat('%',#{name},'%')
             </if>
+			<if test="ename != null and ename.trim() != ''">
+				and `ename` like concat('%',#{ename},'%')
+			</if>
+			<if test="parentId != null">
+				and `parent_id` = #{parentId}
+			</if>
         </where>
 	</select>
 	 

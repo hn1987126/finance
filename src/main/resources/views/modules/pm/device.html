@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>设备</title>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<link rel="stylesheet" href="../../css/font-awesome.min.css">
-<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
-<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
-<link rel="stylesheet" href="../../css/main.css">
-<script src="../../libs/jquery.min.js"></script>
-<script src="../../plugins/layer/layer.js"></script>
-<script src="../../libs/bootstrap.min.js"></script>
-<script src="../../libs/vue.min.js"></script>
-<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
-<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
-<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
-<script src="../../js/common.js"></script>
+	<title>设备</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+	<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+	<link rel="stylesheet" href="../../css/main.css">
+	<script src="../../libs/jquery.min.js"></script>
+	<script src="../../plugins/layer/layer.js"></script>
+	<script src="../../libs/bootstrap.min.js"></script>
+	<script src="../../libs/vue.min.js"></script>
+	<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+	<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+	<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+	<script src="../../js/common.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -31,48 +31,48 @@
 			<a v-if="hasPermission('pm:device:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
 			<a v-if="hasPermission('pm:device:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
 		</div>
-	    <table id="jqGrid"></table>
-	    <div id="jqGridPager"></div>
-    </div>
-    
-    <div v-show="!showList" class="panel panel-default">
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+
+	<div v-show="!showList" class="panel panel-default">
 		<div class="panel-heading">{{title}}</div>
 		<form class="form-horizontal">
-											<div class="form-group">
-			   	<div class="col-sm-2 control-label">设备号</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.deviceNum" placeholder="设备号"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">设备号</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.deviceNum" placeholder="设备号"/>
+				</div>
 			</div>
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">设备名称</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.name" placeholder="设备名称"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">设备名称</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.name" placeholder="设备名称"/>
+				</div>
 			</div>
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">型号</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.deviceModel" placeholder="型号"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">型号</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.deviceModel" placeholder="型号"/>
+				</div>
 			</div>
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">设备mac</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.mac" placeholder="设备mac"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">设备mac</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.mac" placeholder="设备mac"/>
+				</div>
 			</div>
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">网关url</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.gatewayUrl" placeholder="网关url"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">网关url</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.gatewayUrl" placeholder="网关url"/>
+				</div>
 			</div>
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">所在楼层</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.floor" placeholder="所在楼层"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">所在楼层</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.floor" placeholder="所在楼层"/>
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -82,22 +82,22 @@
 				</div>
 			</div>
 
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">所属商场</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.mallId" placeholder="所属商场"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">所属商场</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" style="cursor:pointer;" v-model="device.mallName" readonly="readonly" @click="selectMall" placeholder="所属商场"/>
+				</div>
 			</div>
 
 
-									<div class="form-group">
-			   	<div class="col-sm-2 control-label">标签</div>
-			   	<div class="col-sm-10">
-			      <input type="text" class="form-control" v-model="device.tags" placeholder="标签"/>
-			    </div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">标签</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="device.tags" placeholder="标签"/>
+				</div>
 			</div>
-															<div class="form-group">
-				<div class="col-sm-2 control-label"></div> 
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
 				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
 				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
 			</div>
@@ -108,6 +108,12 @@
 <!-- 选择分组 -->
 <div id="groupLayer" style="display: none;padding:10px;">
 	<ul id="groupTree" class="ztree"></ul>
+</div>
+
+<!--选择商场-->
+<div id="mallLayer" style="display: none;padding:10px;">
+	<table id="jqGridMall"></table>
+	<div id="jqGridMallPager"></div>
 </div>
 
 <script src="../../js/modules/pm/device.js"></script>
