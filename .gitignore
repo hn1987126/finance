@@ -8,3 +8,4 @@ firestorm.log*
 *.bak
 /src/META-INF
 LICENSE
+/$Recycle.Bin

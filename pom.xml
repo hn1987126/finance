@@ -164,7 +164,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<env-type>dev</env-type>
+				<envType>dev</envType>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -173,7 +173,7 @@
 		<profile>
 			<id>pro</id>
 			<properties>
-				<env-type>pro</env-type>
+				<envType>pro</envType>
 			</properties>
 		</profile>
 	</profiles>

@@ -75,3 +75,15 @@ spring:
     	</profiles>
 
 
+6、iframe 在手机上的效果优化：
+src\main\resources\views\index.html里
+<section class="content" style="background:#fff"> 变为：
+<section class="content" style="background:#fff;-webkit-overflow-scrolling: touch;overflow-y: scroll;">
+
+修改密码弹出层调宽度：
+<form class="form-horizontal" style="width: 98%;max-width: 400px;">
+
+弹出修改密码层，js里对宽度修改：
+src\main\resources\static\js\index.js
+area: ['550px', '270px']变为：
+area: ['400px', '270px']
