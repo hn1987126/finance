@@ -29,7 +29,7 @@
 		from tbl_device d
 		<where>
 			<if test="name != null and name.trim() != ''">
-				and d.`name` like concat('%',#{name},'%')
+				and (d.`name` like concat('%',#{name},'%') or d.`device_num` like concat('%',#{name},'%') or d.`device_model` like concat('%',#{name},'%') or d.`mac` like concat('%',#{name},'%') or d.`tags` like concat('%',#{name},'%'))
 			</if>
 		</where>
 		<choose>
@@ -49,7 +49,7 @@
 		select count(*) from tbl_device
         <where>
             <if test="name != null and name.trim() != ''">
-                and `name` like concat('%',#{name},'%')
+				and (`name` like concat('%',#{name},'%') or `device_num` like concat('%',#{name},'%') or `device_model` like concat('%',#{name},'%') or `mac` like concat('%',#{name},'%') or `tags` like concat('%',#{name},'%'))
             </if>
         </where>
 	</select>
