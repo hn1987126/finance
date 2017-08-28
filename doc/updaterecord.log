@@ -74,6 +74,16 @@ spring:
     		</profile>
     	</profiles>
 
+    	还有底下那块：
+    	<plugin>
+        				<groupId>org.codehaus.mojo</groupId>
+        				<artifactId>wagon-maven-plugin</artifactId>
+        				<version>1.0</version>
+        				<configuration>
+        				这里面的内容。
+        				</configuration>
+        </plugin>
+
 
 6、iframe 在手机上的效果优化：
 src\main\resources\views\index.html里
