@@ -1,4 +1,3 @@
-drop database jhs_finance;
 CREATE DATABASE IF NOT EXISTS jhs_finance default charset utf8 COLLATE utf8_general_ci;
 use jhs_finance;
 
