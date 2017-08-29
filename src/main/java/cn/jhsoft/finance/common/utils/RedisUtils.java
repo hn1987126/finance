@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -67,6 +71,24 @@ public class RedisUtils {
 
     public String get(String key) {
         return get(key, NOT_EXPIRE);
+    }
+
+    /**
+     * 新增批量获取
+     * @param keys
+     * @return
+     */
+    public Map<String, String> gets(Set<String> keys) {
+        List<String> list = valueOperations.multiGet(keys);
+
+        Map<String, String> map = new LinkedHashMap<>();
+        int i = 0;
+        for (String k : keys){
+            map.put(k, list.get(i));
+            i++;
+        }
+
+        return map;
     }
 
     public void delete(String key) {
