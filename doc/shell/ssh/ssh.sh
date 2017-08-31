@@ -76,7 +76,7 @@ ssh_copy_id_to_all() {
 
 
 #修改host和sshd_config
-ssh_edit_host(){
+ssh_edit_host() {
 	IFS=","
         arr=($SERVERS)
 	for ip in ${arr[@]}
