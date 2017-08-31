@@ -18,6 +18,7 @@ EOF
 SERVERS=(
 	s2
 	s3
+	s4
 )
 for SERVER in ${SERVERS[@]}
 do
