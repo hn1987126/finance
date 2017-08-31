@@ -51,5 +51,10 @@ public class DeviceServiceImpl implements DeviceService {
 	public void deleteBatch(Integer[] ids){
 		deviceDao.deleteBatch(ids);
 	}
-	
+
+	@Override
+	public DeviceEntity queryObjectByNum(String num) {
+		return deviceDao.queryObjectByNum(num);
+	}
+
 }

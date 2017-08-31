@@ -169,6 +169,13 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+
+		<!--spring-boot集成kafka-->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<!--配置文件，默认 spring.profiles.active 这个节点是传进去 dev，如果在打包时，需要加参数 -P pro，在application.yml配置文件中，需要这样取数据   @spring.profiles.active@ -->
