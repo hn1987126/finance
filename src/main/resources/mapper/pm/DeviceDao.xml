@@ -114,7 +114,7 @@
 		</foreach>
 	</delete>
 
-	<select id="queryObjectByNum" resultType="com.jd.jcloud.wifi_gateway.modules.pm.entity.DeviceEntity">
+	<select id="queryObjectByNum" resultType="cn.jhsoft.finance.modules.pm.entity.DeviceEntity">
 		select d.*,(select m.name from tbl_mall m where m.id=d.mall_id) as mallName,(select p.name from tbl_basic_data p where p.id = d.group_id) as groupName
 		from tbl_device d where d.device_num = #{value}
 	</select>
