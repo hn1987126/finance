@@ -22,7 +22,7 @@ rm ls.list
 #kill -USR1 `ps axu | grep "nginx: master process" | grep -v grep | awk '{print $2}'`
 rm -f /root/wifi_gateway/wifi_gateway.log
 pkill -f wifi_gateway-1.0.0.jar
-nohup java -jar /root/wifi_gateway/wifi_gateway-1.0.0.jar >/root/wifi_gateway/wifi_gateway.log 2>&1 &
+. /etc/profile;nohup java -jar /root/wifi_gateway/wifi_gateway-1.0.0.jar >/root/wifi_gateway/wifi_gateway.log 2>&1 &
 #删除7天前的日志
 #cd ${LOGS_PATH}
 #find . -mtime +7 -name "flume.access_*" | xargs rm -f

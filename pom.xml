@@ -183,7 +183,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<envType>dev</envType>
+				<spring_profiles_active_env>dev</spring_profiles_active_env>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -192,7 +192,7 @@
 		<profile>
 			<id>pro</id>
 			<properties>
-				<envType>pro</envType>
+				<spring_profiles_active_env>pro</spring_profiles_active_env>
 			</properties>
 		</profile>
 	</profiles>

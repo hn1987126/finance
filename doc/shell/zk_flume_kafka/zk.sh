@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 
 #安装zookeeper
@@ -54,7 +54,7 @@ done
 for SERVERNUM in ${SERVERS[@]}
 do
 	SERVER="s${SERVERNUM}"
-	ssh $SERVER "/root/apps/zookeeper-3.4.5/bin/zkServer.sh start"
+	ssh $SERVER ". /etc/profile;/root/apps/zookeeper-3.4.5/bin/zkServer.sh start"
 done
 #查看自己是不是leader
 #/root/apps/apps/zookeeper-3.4.5/bin/zkServer.sh status

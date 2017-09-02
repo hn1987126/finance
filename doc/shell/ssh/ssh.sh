@@ -1,5 +1,6 @@
 #!/bin/bash
 #运行命令 /bin/bash ssh.sh "192.168.0.64" root@2017 "192.168.0.88"
+# /bin/bash ssh.sh "192.168.241.129,192.168.241.130,192.168.241.131" 123456 192.168.241.128
 
 # 要免密的服务器ip
 SERVERS=$1
@@ -55,21 +56,31 @@ ssh_copy_id_to_all() {
 	auto_ssh_copy_id $CONSOLE_IP $PASSWORD
 	hostname=`hostname`
 	hostname_short=s1
-	hosts=${hosts}${CONSOLE_IP}":"${hostname}".."${hostname_short}","
+	hosts=${hosts}${CONSOLE_IP}":"${hostname}","
 	## 禁用 /etc/ssh/ssh_config 里的 StrictHostKeyChecking 设为no 便不会每次ssh的时候输yes
 	sed -i "/^#   StrictHostKeyChecking/c\StrictHostKeyChecking no" /etc/ssh/ssh_config
+	sed -i "/^HOSTNAME=/c\HOSTNAME=s1" /etc/sysconfig/network
+	#关闭防火墙
+	/etc/init.d/iptables stop
+	chkconfig iptables off
 
         IFS=","
         arr=($SERVERS)
         for ip in ${arr[@]}
         do
-		#免密登录
-                auto_ssh_copy_id $ip $PASSWORD
-		hostname=`ssh $ip hostname`
-		hostname_short=s$i
+		    #免密登录
+            auto_ssh_copy_id $ip $PASSWORD
+            hostname=`ssh $ip hostname`
+            #改hostname
+            ssh $ip "sed -i \"/^HOSTNAME=/c\HOSTNAME=s$i\" /etc/sysconfig/network"
+            ssh $ip "hostname s$i"
+            #关闭防火墙
+            ssh $ip "/etc/init.d/iptables stop"
+            ssh $ip "chkconfig iptables off"
+            hostname_short=s$i
 
-		hosts=${hosts}${ip}":"${hostname}".."${hostname_short}","
-		let i+=1
+            hosts=${hosts}${ip}":"${hostname_short}","
+            let i+=1
         done
 }
 

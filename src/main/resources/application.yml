@@ -11,7 +11,7 @@ server:
 spring:
     # 环境 dev|test|pro，在pom.xml里进行了配置，默认是 dev
     profiles:
-        active: @envType@
+        active: @spring_profiles_active_env@
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
