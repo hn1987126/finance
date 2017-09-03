@@ -28,6 +28,11 @@ export PATH=\$PATH:\$ZK_HOME/bin
 EOF
 source /etc/profile
 
+#开机启动
+cat >> /etc/rc.local << EOF
+zkServer.sh start
+EOF
+
 #---------------拷到其他机器中
 SERVERS=(
 	2
@@ -46,6 +51,10 @@ export ZK_HOME=/root/apps/zookeeper-3.4.5
 export PATH=\$PATH:\$ZK_HOME/bin
 EOF'
 	ssh $SERVER "source /etc/profile"
+	#开机启动
+	ssh $SERVER 'cat >> /etc/rc.local << EOF
+    zkServer.sh start
+EOF'
 done
 
 

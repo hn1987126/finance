@@ -4,12 +4,12 @@
 cd /root
 tar -zxvf soft/kafka_2.11-0.11.0.0.tgz -C apps
 cd apps
-mv kafka_2.11-0.11.0.0 kafka0.11
+ln -s kafka_2.11-0.11.0.0 kafka
 mkdir -p /export/servers/logs
 
 #### 配置文件
-cp kafka0.11/config/server.properties kafka0.11/config/server.properties.bak
-cat > kafka0.11/config/server.properties << EOF
+cp kafka/config/server.properties kafka/config/server.properties.bak
+cat > kafka/config/server.properties << EOF
 #broker的全局唯一编号，不能重复
 broker.id=0
 #用来监听连接的端口，producer或consumer将在此端口建立连接
@@ -25,7 +25,7 @@ socket.receive.buffer.bytes=102400
 #请求套接字的缓冲区大小
 socket.request.max.bytes=104857600
 #kafka运行日志存放的路径
-log.dirs=/export/servers/logs/kafka0.11
+log.dirs=/export/servers/logs/kafka
 #topic在当前broker上的分片个数
 num.partitions=2
 #用来恢复和清理data下数据的线程数量
@@ -37,6 +37,7 @@ log.roll.hours=168
 #zookeeper
 zookeeper.connect=s1:2181,s2:2181,s3:2181
 zookeeper.connection.timeout.ms=6000
+delete.topic.enable=true
 EOF
 
 #### 分发安装包
@@ -49,29 +50,34 @@ for SERVERNUM in ${SERVERS[@]}
 do
 	cd /root/apps
 	SERVER="s${SERVERNUM}"
-	scp -r kafka0.11 $SERVER:/root/apps
+	scp -r kafka $SERVER:/root/apps
 	ssh $SERVER "mkdir -p /export/servers/logs"
 	#修改别的机器的 broker.id，分别为0，1，2，3等
 	exe="/^broker.id=/c\broker.id=${i}"
-	ssh $SERVER "sed -i ${exe} /root/apps/kafka0.11/config/server.properties"
+	ssh $SERVER "sed -i ${exe} /root/apps/kafka/config/server.properties"
 	let i+=1
 done
 
 #启动本机和目标机器上的kafka服务
-nohup /root/apps/kafka0.11/bin/kafka-server-start.sh  /root/apps/kafka0.11/config/server.properties >/dev/null 2>&1 &
+nohup /root/apps/kafka/bin/kafka-server-start.sh  /root/apps/kafka/config/server.properties >/dev/null 2>&1 &
 for SERVERNUM in ${SERVERS[@]}
 do
 	SERVER="s${SERVERNUM}"
-	ssh $SERVER 'nohup /root/apps/kafka0.11/bin/kafka-server-start.sh  /root/apps/kafka0.11/config/server.properties >/dev/null 2>&1 &'
+	ssh $SERVER 'nohup /root/apps/kafka/bin/kafka-server-start.sh  /root/apps/kafka/config/server.properties >/dev/null 2>&1 &'
 done
+
+
 #测试
-#/root/apps/kafka0.11/bin/kafka-topics.sh --list --zookeeper s1:2181
-#/root/apps/kafka0.11/bin/kafka-console-consumer.sh --zookeeper s1:2181 --from-beginning --topic wifi6
-#查看分区情况
-#/root/apps/kafka0.11/bin/kafka-topics.sh --describe --zookeeper s1:2181
+
 #新建主题
-#/root/apps/kafka0.11/bin/kafka-topics.sh --create --zookeeper s1:2181 --replication-factor 2 --partitions 4 --topic wifi7
-#kafka增加分区
-#/root/apps/kafka0.11/bin/kafka-topics.sh --alter --topic wifi7 --zookeeper s1:2181 --partitions 6
+#/root/apps/kafka/bin/kafka-topics.sh --create --zookeeper s1:2181 --replication-factor 2 --partitions 4 --topic wifi7
+#所有主题列表
+#/root/apps/kafka/bin/kafka-topics.sh --list --zookeeper s1:2181
+#消费
+#/root/apps/kafka/bin/kafka-console-consumer.sh --zookeeper s1:2181 --from-beginning --topic wifi6
+#查看分区情况
+#/root/apps/kafka/bin/kafka-topics.sh --describe --zookeeper s1:2181
+#增加分区
+#/root/apps/kafka/bin/kafka-topics.sh --alter --topic wifi7 --zookeeper s1:2181 --partitions 6
 #删除主题
-#/root/apps/kafka0.11/bin/kafka-topics.sh --delete --zookeeper s1:2181 --topic wifi7
+#/root/apps/kafka/bin/kafka-topics.sh --delete --zookeeper s1:2181 --topic wifi7

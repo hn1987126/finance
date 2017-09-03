@@ -4,7 +4,9 @@
 cd /root
 tar -vxzf soft/apache-flume-1.7.0-bin.tar.gz -C apps
 cd apps
-mv apache-flume-1.7.0-bin flume1.7
+ln -s apache-flume-1.7.0-bin flume
+#cp前面加\ 是覆盖时不需要确认
+\cp -r /root/soft/flume-taildir-source-1.7.0.jar flume/lib/
 cd flume/conf
 
 cat >> exe2kafka.conf << EOF
@@ -28,9 +30,9 @@ a1.channels.c1.capacity = 1000
 a1.channels.c1.transactionCapacity = 100
 a1.channels.c1.keep-alive = 100
 
-# 随机平均分区
+# 随机平均分区  \$中的\是转义字符，只有在自动化脚本时需要，如果是复制粘贴这片的话，是不需要的
 a1.sources.r1.interceptors = i1
-a1.sources.r1.interceptors.i1.type = org.apache.flume.sink.solr.morphline.UUIDInterceptor$Builder
+a1.sources.r1.interceptors.i1.type = org.apache.flume.sink.solr.morphline.UUIDInterceptor\$Builder
 a1.sources.r1.interceptors.i1.headerName = key
 a1.sources.r1.interceptors.i1.preserveExisting = false
 
@@ -55,4 +57,4 @@ a1.sinks.k1.connect-timeout = 8000
 EOF
 
 #启动flume
-/root/apps/flume1.7/bin/flume-ng agent --conf /root/apps/flume1.7/conf --conf-file /root/apps/flume1.7/conf/exe2kafka.conf --name a1 -Dflume.root.logger=INFO,console &
+/root/apps/flume/bin/flume-ng agent --conf /root/apps/flume/conf --conf-file /root/apps/flume/conf/exe2kafka.conf --name a1 -Dflume.root.logger=INFO,console &
