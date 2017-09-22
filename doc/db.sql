@@ -112,7 +112,7 @@ CREATE TABLE `sys_log` (
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8 COMMENT='系统日志';
 
 -- 初始数据
-INSERT INTO `sys_user` (`user_id`, `username`, `password`, `salt`, `email`, `mobile`, `status`, `create_time`) VALUES ('1', 'admin', '7e0ffd097b418c6433c4a3a2090a0b902d5b2e37c396730dac06cc8641bf4e0b', 'YzcmCZNvbXocrsz9dm8e', 'hn1987@126.com', '18610556658', '1', '2016-11-11 11:11:11');
+INSERT INTO `sys_user` (`user_id`, `username`, `password`, `salt`, `email`, `mobile`, `status`, `create_time`) VALUES ('1', 'admin', '0445e39c6be4b7f7aa7aa8445c217a6dd78e48e84b2898fa95a09a2f409a0e1a', 'YzcmCZNvbXocrsz9dm8e', 'admin@admin.com', '18612341123', '1', '2017-09-11 11:11:11');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('1', '0', '系统管理', NULL, NULL, '0', 'fa fa-cog', '10');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('2', '1', '管理员管理', 'modules/sys/user.html', NULL, '1', 'fa fa-user', '1');
 INSERT INTO `sys_menu` (`menu_id`, `parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('3', '1', '角色管理', 'modules/sys/role.html', NULL, '1', 'fa fa-user-secret', '2');
@@ -155,12 +155,12 @@ insert into sys_dept values(1, 0, '一级部门', 0, 0);
 
 
 -- 菜单SQL
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '基础数据', 'modules/pm/basicdata.html', NULL, '1', 'fa fa-window-restore', '100');
-set @parentId = @@identity;
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:basicdata:list,pm:basicdata:info', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:basicdata:save,pm:basicdata:select', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:basicdata:update,pm:basicdata:select', '2', null, '6';
-INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:basicdata:delete', '2', null, '6';
+-- INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) VALUES ('500', '基础数据', 'modules/pm/basicdata.html', NULL, '1', 'fa fa-window-restore', '100');
+-- set @parentId = @@identity;
+-- INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '查看', null, 'pm:basicdata:list,pm:basicdata:info', '2', null, '6';
+-- INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '新增', null, 'pm:basicdata:save,pm:basicdata:select', '2', null, '6';
+-- INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '修改', null, 'pm:basicdata:update,pm:basicdata:select', '2', null, '6';
+-- INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`) SELECT @parentId, '删除', null, 'pm:basicdata:delete', '2', null, '6';
 
 
 
