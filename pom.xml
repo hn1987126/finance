@@ -37,7 +37,7 @@
 		<!--wagon plugin 配置-->
 		<service-path>/root/${artifactId}</service-path>
 		<pack-name>${artifactId}-${version}.jar</pack-name>
-		<remote-addr>118.190.23.142:22</remote-addr>
+		<remote-addr>118.190.23.222:22</remote-addr>
 		<remote-username>root</remote-username>
 		<remote-passwd>1qaz*()_kl%4FGk_k:l|.</remote-passwd>
 	</properties>
